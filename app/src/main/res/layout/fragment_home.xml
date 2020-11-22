@@ -1,0 +1,255 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    >
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="me.alberto.cowrywiseconveter.screens.home.viewmodel.HomeViewModel" />
+
+        <import type="me.alberto.cowrywiseconveter.util.LoadingState" />
+
+        <import type="android.view.View" />
+    </data>
+
+    <androidx.drawerlayout.widget.DrawerLayout
+        android:id="@+id/drawer_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".screens.home.view.HomeFragment">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:title="">
+
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="@dimen/pd_md"
+                    android:padding="@dimen/pd_md"
+                    android:text="@string/sign_up"
+                    android:textAllCaps="false"
+                    android:textColor="@color/app_green"
+                    android:textSize="20sp" />
+            </androidx.appcompat.widget.Toolbar>
+
+            <TextView
+                android:id="@+id/error_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/error_bg"
+                android:padding="5dp"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:visibility="invisible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/toolbar"
+                tools:text="Some error occurred" />
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/mg_md"
+                android:layout_marginTop="@dimen/mg_lg"
+                android:text="@string/home_header"
+                android:textColor="@color/app_blue"
+                android:textSize="45sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+            <!--Base currency edit text-->
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/base_currency_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/mg_md"
+                android:layout_marginTop="@dimen/mg_lg"
+                android:layout_marginRight="@dimen/mg_md"
+                android:background="@drawable/edittext_bg"
+                android:minHeight="@dimen/edittext_ht"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView">
+
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:inputType="numberDecimal"
+                    android:minHeight="@dimen/edittext_ht"
+                    android:paddingStart="@dimen/pd_md"
+                    android:text="@={ viewModel.convertText }"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/base_currency"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/base_currency"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/pd_md"
+                    android:text="@{ viewModel.baseCurrency }"
+                    android:textSize="24sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="USD" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <!--            Target currency edit text-->
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/constraintLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/mg_md"
+                android:layout_marginTop="@dimen/mg_md"
+                android:layout_marginRight="@dimen/mg_md"
+                android:background="@drawable/edittext_bg"
+                android:minHeight="@dimen/edittext_ht"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/base_currency_container">
+
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/transparent"
+                    android:enabled="false"
+                    android:inputType="none"
+                    android:minHeight="@dimen/edittext_ht"
+                    android:paddingStart="@dimen/pd_md"
+                    android:text="@={ viewModel.conversionResult }"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toStartOf="@+id/target_currency"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/target_currency"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="@dimen/pd_md"
+                    android:text="@{ viewModel.targetCurrency }"
+                    android:textSize="24sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="NGN" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <LinearLayout
+                android:id="@+id/currency_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/mg_md"
+                android:orientation="horizontal"
+                android:weightSum="5"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/constraintLayout">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/gender_field"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/mg_md"
+                    android:layout_weight="2"
+
+                    >
+
+                    <AutoCompleteTextView
+                        android:id="@+id/genderSelect"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/from"
+                        android:inputType="none"
+                        android:text="@={ viewModel.baseCurrency }"
+                        app:symbols="@{ viewModel.symbols }" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <ImageView
+                    android:layout_width="20dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_transfer_arrows" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/target_field"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/mg_md"
+                    android:layout_weight="2">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/target_select"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/to"
+                        android:inputType="none"
+                        android:text="@={ viewModel.targetCurrency }"
+                        app:symbols="@{ viewModel.symbols }" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/convert_btn"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/mg_md"
+                android:layout_marginTop="@dimen/mg_md"
+                android:layout_marginRight="@dimen/mg_md"
+                android:paddingTop="@dimen/pd_md"
+                android:paddingBottom="@dimen/pd_md"
+                android:text="@string/convert"
+                android:textAllCaps="false"
+                android:textSize="20sp"
+                app:layout_constraintTop_toBottomOf="@+id/currency_container" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <include
+            android:id="@+id/loading_layout"
+            layout="@layout/loading_screen"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            />
+
+        <com.google.android.material.navigation.NavigationView
+            android:layout_width="300dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            android:fitsSystemWindows="true"
+            app:headerLayout="@layout/header_layout">
+
+        </com.google.android.material.navigation.NavigationView>
+    </androidx.drawerlayout.widget.DrawerLayout>
+</layout>
+
