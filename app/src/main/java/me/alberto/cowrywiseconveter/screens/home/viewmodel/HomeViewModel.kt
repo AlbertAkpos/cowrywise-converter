@@ -77,7 +77,7 @@ class HomeViewModel @Inject constructor(
                     val query = Query(
                         baseCurrency.value.toString(),
                         targetCurrency.value.toString(),
-                        convertText.value!!.toLong()
+                        convertText.value!!.toDouble()
                     )
                     when (val result = convertUserCase.execute(query)) {
                         is Result.Success -> conversionResult.value = result.data.toString()

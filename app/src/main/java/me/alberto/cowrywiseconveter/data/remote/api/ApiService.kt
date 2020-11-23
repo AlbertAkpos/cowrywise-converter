@@ -14,6 +14,6 @@ interface ApiService {
     suspend fun convert(
         @Query("from") from: String,
         @Query("to") to: String,
-        @Query("amount") amount: Long
+        @Query("amount") amount: Double
     ): ConvertResponse
 }

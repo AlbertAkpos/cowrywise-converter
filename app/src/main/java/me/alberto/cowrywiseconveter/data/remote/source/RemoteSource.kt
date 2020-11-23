@@ -14,7 +14,7 @@ class RemoteSource @Inject constructor(private val restClient: RestClient) : IRe
         }
     }
 
-    override suspend fun convert(from: String, to: String, amount: Long): Result<Double> {
+    override suspend fun convert(from: String, to: String, amount: Double): Result<Double> {
         val response = restClient.getRemote().convert(from, to, amount)
         return if (response.success) {
            Result.Success( response.result)

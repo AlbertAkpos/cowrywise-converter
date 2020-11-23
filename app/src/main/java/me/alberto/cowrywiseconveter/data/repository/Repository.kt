@@ -10,7 +10,7 @@ class Repository @Inject constructor(private val remoteSource: RemoteSource) : I
         return remoteSource.getSymbols()
     }
 
-    override suspend fun convert(from: String, to: String, amount: Long): Result<Double> {
+    override suspend fun convert(from: String, to: String, amount: Double): Result<Double> {
         return remoteSource.convert(from, to, amount)
     }
 }
