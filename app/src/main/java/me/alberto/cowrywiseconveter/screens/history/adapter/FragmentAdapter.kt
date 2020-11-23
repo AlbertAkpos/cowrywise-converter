@@ -5,9 +5,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import me.alberto.cowrywiseconveter.data.remote.model.Query
-import me.alberto.cowrywiseconveter.screens.common.fragment.ChartFragment
+import me.alberto.cowrywiseconveter.screens.history.view.ChartFragment
 
-class FragmentAdapter(fragmentActivity: FragmentActivity, private val query: Query) :
+class FragmentAdapter(fragmentActivity: FragmentActivity, private val query: Query?) :
     FragmentStateAdapter(fragmentActivity) {
     override fun getItemCount(): Int = 2
 

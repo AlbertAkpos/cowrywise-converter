@@ -1,9 +1,6 @@
 package me.alberto.cowrywiseconveter.screens.home.viewmodel
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import kotlinx.coroutines.launch
 import me.alberto.cowrywiseconveter.data.domain.usecase.ConvertUserCase
 import me.alberto.cowrywiseconveter.data.domain.usecase.GetSymbolsUserCase
@@ -31,6 +28,17 @@ class HomeViewModel @Inject constructor(
 
     private val _error = MutableLiveData<String>()
     val error: LiveData<String> = _error
+
+    val showHistory: LiveData<Boolean> = MediatorLiveData<Boolean>().apply {
+        fun update() {
+            baseCurrency.value ?: return
+            targetCurrency.value ?: return
+            value = (!baseCurrency.value.isNullOrEmpty()  && !targetCurrency.value.isNullOrEmpty())
+        }
+        addSource(baseCurrency){update()}
+        addSource(targetCurrency){update()}
+        update()
+    }
 
     init {
         getSymbols()

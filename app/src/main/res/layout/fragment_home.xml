@@ -93,6 +93,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/textView">
 
                 <EditText
+                    android:id="@+id/from_edittext"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
@@ -135,6 +136,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/base_currency_container">
 
                 <EditText
+                    android:id="@+id/to_edittext"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:background="@android:color/transparent"
@@ -235,11 +237,24 @@
                 android:textSize="20sp"
                 app:layout_constraintTop_toBottomOf="@+id/currency_container" />
 
+            <TextView
+                android:id="@+id/rate_history"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/view_rate_history"
+                android:textStyle="bold"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="@dimen/mg_md"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/convert_btn" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <include
             android:id="@+id/loading_layout"
             layout="@layout/loading_screen"
+            tools:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             />

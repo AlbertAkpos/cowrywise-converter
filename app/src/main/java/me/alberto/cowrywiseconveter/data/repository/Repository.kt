@@ -13,4 +13,13 @@ class Repository @Inject constructor(private val remoteSource: RemoteSource) : I
     override suspend fun convert(from: String, to: String, amount: Double): Result<Double> {
         return remoteSource.convert(from, to, amount)
     }
+
+    override suspend fun getHistoryRates(
+        startDate: String,
+        endDate: String,
+        base: String,
+        symbol: String
+    ): Result<Map<String, Double>> {
+        return remoteSource.getRateHistory(startDate, endDate, base, symbol)
+    }
 }

@@ -11,4 +11,7 @@
     <string name="from">From</string>
     <string name="to">To</string>
     <string name="retry">Retry</string>
+    <string name="last_30">Last 30 days</string>
+    <string name="last_90">Last 90 days</string>
+    <string name="view_rate_history"><u>View rate history</u></string>
 </resources>

@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import android.widget.Toast
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
@@ -13,7 +14,9 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import me.alberto.cowrywiseconveter.App
 import me.alberto.cowrywiseconveter.R
+import me.alberto.cowrywiseconveter.data.remote.model.Query
 import me.alberto.cowrywiseconveter.databinding.FragmentHomeBinding
+import me.alberto.cowrywiseconveter.screens.history.view.HistoryFrag
 import me.alberto.cowrywiseconveter.screens.home.viewmodel.HomeViewModel
 import me.alberto.cowrywiseconveter.util.LoadingState
 import java.util.*
@@ -71,6 +74,17 @@ class HomeFragment : Fragment() {
         binding.loadingLayout.retry.setOnClickListener {
             viewModel.getSymbols()
         }
+
+        binding.rateHistory.setOnClickListener {
+            val showHistoryFrag =
+                (viewModel.showHistory.value != null && viewModel.showHistory.value != false)
+            if (showHistoryFrag) {
+                showBottomSheet()
+            } else {
+                Toast.makeText(requireContext(), "Please pick target currencies", Toast.LENGTH_LONG)
+                    .show()
+            }
+        }
     }
 
     private fun setupViewModel() {
@@ -82,7 +96,7 @@ class HomeFragment : Fragment() {
         viewModel.error.observe(viewLifecycleOwner) {
             binding.errorText.text = it
             binding.errorText.startAnimation(fadeInAnim)
-            Timer().schedule(3000){
+            Timer().schedule(3000) {
                 requireActivity().runOnUiThread {
                     binding.errorText.startAnimation(fadeOutAnim)
                     binding.errorText.text = ""
@@ -90,13 +104,13 @@ class HomeFragment : Fragment() {
             }
         }
 
-        viewModel.loadingState.observe(viewLifecycleOwner){ loadingState ->
+        viewModel.loadingState.observe(viewLifecycleOwner) { loadingState ->
             loadingState ?: return@observe
             when (loadingState) {
                 is LoadingState.Success -> {
                     binding.loadingLayout.root.visibility = View.GONE
                 }
-                is  LoadingState.Error -> {
+                is LoadingState.Error -> {
                     binding.loadingLayout.errorContainer.visibility = View.VISIBLE
                     binding.loadingLayout.errorText.text = loadingState.error
                     binding.loadingLayout.progressBar.visibility = View.GONE
@@ -108,6 +122,20 @@ class HomeFragment : Fragment() {
             }
 
         }
+
+        viewModel.showHistory.observe(viewLifecycleOwner) {
+            if (it == true) {
+                binding.rateHistory.setTextColor(resources.getColor(R.color.app_blue))
+            }
+        }
+    }
+
+    private fun showBottomSheet() {
+        val from = binding.fromEdittext.text.toString()
+        val to = binding.toEdittext.text.toString()
+        val query = Query(from, to, 0.0)
+        val dialog = HistoryFrag.newInstance(query)
+        dialog.show(requireActivity().supportFragmentManager, dialog.javaClass.name)
     }
 
     private fun setupDrawerWithToolbar() {
