@@ -24,21 +24,23 @@ class HistoryFrag : DialogFragment() {
     private lateinit var binding: FragmentHistoryBinding
     private lateinit var viewPager: ViewPager2
     private lateinit var tabLayout: TabLayout
-    private val query by lazy {
-        arguments?.getParcelable<Query>(FragmentAdapter.QUERY)
-    }
+    private val query by lazy { arguments?.getParcelable<Query>(FragmentAdapter.QUERY) }
+
 
     companion object {
         fun newInstance(query: Query): HistoryFrag {
             val fragment = HistoryFrag()
-            val bundle = Bundle().apply { putParcelable(FragmentAdapter.QUERY, query) }
+            val bundle = Bundle()
+            bundle.putParcelable(FragmentAdapter.QUERY, query)
             fragment.arguments = bundle
             return fragment
         }
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
+
+
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val dialog = BottomSheetDialog(requireContext())
         binding = FragmentHistoryBinding.inflate(LayoutInflater.from(context), null, false)
         val fragmentAdapter = FragmentAdapter(requireActivity(), query)
         binding.viewPager.adapter = fragmentAdapter
@@ -46,12 +48,6 @@ class HistoryFrag : DialogFragment() {
         tabLayout = binding.tabLayout
         viewPager.isUserInputEnabled = false
         setupTabWithViewPager()
-    }
-
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val contextWrapper = ContextThemeWrapper(requireContext(), R.style.ThemeOverlay_BottomSheetDialog)
-        val dialog = BottomSheetDialog(contextWrapper)
-        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         dialog.setContentView(binding.root)
         return dialog
     }

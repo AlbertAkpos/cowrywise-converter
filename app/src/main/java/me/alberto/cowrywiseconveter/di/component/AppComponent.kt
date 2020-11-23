@@ -6,6 +6,7 @@ import dagger.Component
 import me.alberto.cowrywiseconveter.di.module.DataModule
 import me.alberto.cowrywiseconveter.di.module.RemoteModule
 import me.alberto.cowrywiseconveter.di.module.ViewModelModule
+import me.alberto.cowrywiseconveter.screens.history.view.ChartFragment
 import me.alberto.cowrywiseconveter.screens.home.view.HomeFragment
 
 @Component(modules = [ViewModelModule::class, DataModule::class, RemoteModule::class])
@@ -16,4 +17,5 @@ interface AppComponent {
     }
 
     fun inject(fragment: HomeFragment)
+    fun inject(fragment: ChartFragment)
 }

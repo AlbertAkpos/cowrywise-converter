@@ -7,6 +7,7 @@ import dagger.Module
 import dagger.multibindings.IntoMap
 import me.alberto.cowrywiseconveter.di.viewmodel.ViewModelFactory
 import me.alberto.cowrywiseconveter.di.viewmodel.ViewModelKey
+import me.alberto.cowrywiseconveter.screens.history.viewmodel.ChartFragmentViewModel
 import me.alberto.cowrywiseconveter.screens.home.viewmodel.HomeViewModel
 
 @Module
@@ -18,4 +19,9 @@ abstract class ViewModelModule {
     @IntoMap
     @ViewModelKey(HomeViewModel::class)
     abstract fun bindHomeViewModel(homeViewModel: HomeViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(ChartFragmentViewModel::class)
+    abstract fun bindChartViewModel(chartFragmentViewModel: ChartFragmentViewModel): ViewModel
 }

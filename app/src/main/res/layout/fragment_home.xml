@@ -186,7 +186,7 @@
                     >
 
                     <AutoCompleteTextView
-                        android:id="@+id/genderSelect"
+                        android:id="@+id/base_select"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/from"

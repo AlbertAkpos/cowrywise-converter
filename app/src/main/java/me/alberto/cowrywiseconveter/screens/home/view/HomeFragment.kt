@@ -131,8 +131,8 @@ class HomeFragment : Fragment() {
     }
 
     private fun showBottomSheet() {
-        val from = binding.fromEdittext.text.toString()
-        val to = binding.toEdittext.text.toString()
+        val from = binding.baseSelect.text.toString()
+        val to = binding.targetSelect.text.toString()
         val query = Query(from, to, 0.0)
         val dialog = HistoryFrag.newInstance(query)
         dialog.show(requireActivity().supportFragmentManager, dialog.javaClass.name)
