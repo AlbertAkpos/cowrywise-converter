@@ -20,7 +20,7 @@ import me.alberto.cowrywiseconveter.R
 import me.alberto.cowrywiseconveter.data.remote.model.Query
 import me.alberto.cowrywiseconveter.databinding.FragmentChartBinding
 import me.alberto.cowrywiseconveter.screens.history.adapter.FragmentAdapter
-import me.alberto.cowrywiseconveter.screens.history.viewmodel.ChatFragmentViewModel
+import me.alberto.cowrywiseconveter.screens.history.viewmodel.ChartFragmentViewModel
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -35,7 +35,7 @@ class ChartFragment : Fragment() {
 
     private lateinit var lineChart: LineChart
 
-    private val viewModel: ChatFragmentViewModel by viewModels { factory }
+    private val viewModel: ChartFragmentViewModel by viewModels { factory }
 
     private val historyToFetch by lazy { arguments?.getInt(FragmentAdapter.HISTORY) }
     private val query: Query? by lazy { arguments?.getParcelable(FragmentAdapter.QUERY) }
@@ -50,7 +50,18 @@ class ChartFragment : Fragment() {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        if (query != null && historyToFetch != null) {
+            viewModel.getRateHistory(query!!, historyToFetch!!)
+
+        }
+    }
+
     private fun initViews() {
+        binding.viewModel = viewModel
+        binding.lifecycleOwner = this
+
         lineChart = binding.lineChart
         lineChart.setViewPortOffsets(0f, 0f, 0f, 0f)
         lineChart.setBackgroundColor(resources.getColor(R.color.app_blue))
@@ -85,7 +96,7 @@ class ChartFragment : Fragment() {
 
         val set1: LineDataSet
 
-        if (lineChart.data != null && lineChart.data.dataSetCount > 0){
+        if (lineChart.data != null && lineChart.data.dataSetCount > 0) {
             set1 = lineChart.data.getDataSetByIndex(0) as LineDataSet
             set1.values = values
             lineChart.notifyDataSetChanged()
