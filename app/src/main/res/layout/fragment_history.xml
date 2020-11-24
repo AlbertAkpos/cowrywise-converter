@@ -10,6 +10,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="400dp"
+        android:padding="@dimen/pd_md"
         android:background="@drawable/bottom_dialog_bg"
         tools:context=".screens.history.view.HistoryFrag">
 
@@ -17,9 +18,14 @@
             android:id="@+id/tab_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:tabTextColor="@color/black"
+            app:tabTextColor="@color/tab_text_color"
             app:tabBackground="@color/app_blue"
             app:tabGravity="fill"
+            app:tabTextAppearance="@style/TabStyle"
+            app:tabIndicator="@drawable/tab_indicator"
+            app:tabIndicatorColor="@color/app_green"
+            app:tabIndicatorFullWidth="false"
+            app:tabSelectedTextColor="@color/white"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

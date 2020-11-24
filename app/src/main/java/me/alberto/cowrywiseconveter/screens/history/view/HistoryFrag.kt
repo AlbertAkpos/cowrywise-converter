@@ -9,9 +9,11 @@ import android.os.Bundle
 import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import me.alberto.cowrywiseconveter.R
@@ -20,7 +22,7 @@ import me.alberto.cowrywiseconveter.databinding.FragmentHistoryBinding
 import me.alberto.cowrywiseconveter.screens.history.adapter.FragmentAdapter
 
 
-class HistoryFrag : DialogFragment() {
+class HistoryFrag : BottomSheetDialogFragment() {
     private lateinit var binding: FragmentHistoryBinding
     private lateinit var viewPager: ViewPager2
     private lateinit var tabLayout: TabLayout
@@ -39,17 +41,19 @@ class HistoryFrag : DialogFragment() {
 
 
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        val dialog = BottomSheetDialog(requireContext())
-        binding = FragmentHistoryBinding.inflate(LayoutInflater.from(context), null, false)
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        binding = FragmentHistoryBinding.inflate(inflater, container, false)
         val fragmentAdapter = FragmentAdapter(requireActivity(), query)
         binding.viewPager.adapter = fragmentAdapter
         viewPager = binding.viewPager
         tabLayout = binding.tabLayout
         viewPager.isUserInputEnabled = false
         setupTabWithViewPager()
-        dialog.setContentView(binding.root)
-        return dialog
+        return binding.root
     }
 
 
