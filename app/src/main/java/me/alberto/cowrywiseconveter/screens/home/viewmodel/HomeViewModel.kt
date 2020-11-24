@@ -2,7 +2,9 @@ package me.alberto.cowrywiseconveter.screens.home.viewmodel
 
 import androidx.lifecycle.*
 import kotlinx.coroutines.launch
+import me.alberto.cowrywiseconveter.data.domain.model.Country
 import me.alberto.cowrywiseconveter.data.domain.usecase.ConvertUserCase
+import me.alberto.cowrywiseconveter.data.domain.usecase.GetSymbolsFromRemoteUseCase
 import me.alberto.cowrywiseconveter.data.domain.usecase.GetSymbolsUserCase
 import me.alberto.cowrywiseconveter.data.remote.model.Query
 import me.alberto.cowrywiseconveter.data.remote.source.Result
@@ -11,12 +13,12 @@ import javax.inject.Inject
 
 class HomeViewModel @Inject constructor(
     private val getSymbolsUserCase: GetSymbolsUserCase,
-    private val convertUserCase: ConvertUserCase
+    private val convertUserCase: ConvertUserCase,
+    private val getRemoteSymbolsUserCase: GetSymbolsFromRemoteUseCase
 ) :
     ViewModel() {
+    val symbols: LiveData<List<Country>> = getSymbolsUserCase.execute()
 
-    private val _symbols = MutableLiveData<List<String>>()
-    val symbols: LiveData<List<String>> = _symbols
     private val _loadingState = MutableLiveData<LoadingState>()
     val loadingState: LiveData<LoadingState> = _loadingState
 
@@ -29,14 +31,17 @@ class HomeViewModel @Inject constructor(
     private val _error = MutableLiveData<String>()
     val error: LiveData<String> = _error
 
+    private val _loading = MutableLiveData<Boolean>()
+    val loading: LiveData<Boolean> = _loading
+
     val showHistory: LiveData<Boolean> = MediatorLiveData<Boolean>().apply {
         fun update() {
             baseCurrency.value ?: return
             targetCurrency.value ?: return
-            value = (!baseCurrency.value.isNullOrEmpty()  && !targetCurrency.value.isNullOrEmpty())
+            value = (!baseCurrency.value.isNullOrEmpty() && !targetCurrency.value.isNullOrEmpty())
         }
-        addSource(baseCurrency){update()}
-        addSource(targetCurrency){update()}
+        addSource(baseCurrency) { update() }
+        addSource(targetCurrency) { update() }
         update()
     }
 
@@ -48,9 +53,8 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             try {
                 _loadingState.value = LoadingState.Loading
-                when (val result = getSymbolsUserCase.execute()) {
+                when (val result = getRemoteSymbolsUserCase.execute()) {
                     is Result.Success -> {
-                        _symbols.value = result.data
                         _loadingState.value = LoadingState.Success
                     }
                     is Result.Failure -> {
@@ -72,28 +76,36 @@ class HomeViewModel @Inject constructor(
         }
 
         if (baseCurrency.value.isNullOrEmpty()) {
-
+            _error.postValue("Base currency value empty")
         }
 
         if (targetCurrency.value.isNullOrEmpty()) {
-
+            _error.postValue("Target currency value empty")
         }
 
         if (!convertText.value.isNullOrEmpty() && !baseCurrency.value.isNullOrEmpty() && !targetCurrency.value.isNullOrEmpty()) {
             viewModelScope.launch {
                 try {
+                    _loading.postValue(true)
                     val query = Query(
                         baseCurrency.value.toString(),
                         targetCurrency.value.toString(),
                         convertText.value!!.toDouble()
                     )
                     when (val result = convertUserCase.execute(query)) {
-                        is Result.Success -> conversionResult.value = result.data.toString()
-                        is Result.Failure -> _error.value = result.error
+                        is Result.Success -> {
+                            conversionResult.value = result.data.toString()
+                            _loading.postValue(false)
+                        }
+                        is Result.Failure -> {
+                            _error.value = result.error
+                            _loading.postValue(false)
+                        }
                     }
 
                 } catch (exp: Exception) {
                     _error.value = exp.message
+                    _loading.postValue(false)
                 }
 
             }

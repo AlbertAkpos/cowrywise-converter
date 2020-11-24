@@ -1,9 +1,11 @@
 package me.alberto.cowrywiseconveter.data.domain.repository
 
+import androidx.lifecycle.LiveData
+import me.alberto.cowrywiseconveter.data.domain.model.Country
 import me.alberto.cowrywiseconveter.data.remote.source.Result
 
 interface IRepository {
-    suspend fun getSymbols(): Result<List<String>>
+    fun getSymbols(): LiveData<List<Country>>
     suspend fun convert(from: String, to: String, amount: Double): Result<Double>
     suspend fun getHistoryRates(
         startDate: String,
@@ -11,4 +13,6 @@ interface IRepository {
         base: String,
         symbol: String
     ): Result<Map<String, Double>>
+
+    suspend fun getSymbolsFromRemote(): Result<Boolean>
 }

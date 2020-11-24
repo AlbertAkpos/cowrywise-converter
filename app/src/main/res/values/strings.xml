@@ -10,6 +10,8 @@
     <string name="convert">Convert</string>
     <string name="from">From</string>
     <string name="to">To</string>
+    <string name="from_hint">From eg USD</string>
+    <string name="to_hint">To eg NGN</string>
     <string name="retry">Retry</string>
     <string name="last_30">Past 30 days</string>
     <string name="last_90">Past 90 days</string>

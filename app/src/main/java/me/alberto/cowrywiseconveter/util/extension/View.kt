@@ -1,12 +1,13 @@
 package me.alberto.cowrywiseconveter.util.extension
 
-import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import androidx.databinding.BindingAdapter
 import me.alberto.cowrywiseconveter.R
+import me.alberto.cowrywiseconveter.data.domain.model.Country
+import me.alberto.cowrywiseconveter.screens.home.adapter.CountryAdapter
 
 @BindingAdapter("app:symbols")
-fun AutoCompleteTextView.setSymbols(list: List<String>?) {
-    val adapter = ArrayAdapter(context, R.layout.simple_text_item, list ?: emptyList())
+fun AutoCompleteTextView.setSymbols(list: List<Country>?) {
+    val adapter = CountryAdapter(context, list ?: emptyList())
     setAdapter(adapter)
 }
