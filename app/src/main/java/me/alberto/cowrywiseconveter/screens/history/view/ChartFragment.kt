@@ -81,8 +81,8 @@ class ChartFragment : Fragment() {
         lineChart.setDrawGridBackground(false)
         lineChart.maxHighlightDistance = 300f //change
 
-        val xAxis = lineChart.xAxis
-        xAxis.isEnabled = false
+//        val xAxis = lineChart.xAxis
+//        xAxis.isEnabled = false
 
         val yAxis = lineChart.axisLeft
         yAxis.setLabelCount(6, false)
@@ -103,6 +103,7 @@ class ChartFragment : Fragment() {
     private fun setupObservers() {
         viewModel.rates.observe(viewLifecycleOwner) { rates ->
             rates ?: return@observe
+            binding.lineChart.visibility = View.VISIBLE
             val dates = rates.map { it.key }
             val rateValues = rates.map { it.value }
             drawChart(dates, rateValues)
@@ -115,10 +116,20 @@ class ChartFragment : Fragment() {
 
    private fun drawChart(dateList: List<String>, rates: List<Double>) {
 
+
         val values = ArrayList<Entry>()
         for (i in rates.indices) {
             values.add(Entry(i.toFloat(), rates[i].toFloat()))
         }
+
+
+       val xAxis = lineChart.xAxis
+       xAxis.setLabelCount(6, false)
+       xAxis.textColor = Color.WHITE
+       xAxis.setPosition(XAxis.XAxisPosition.BOTTOM_INSIDE)
+       xAxis.setDrawGridLines(false)
+       xAxis.axisLineColor = Color.WHITE
+       xAxis.valueFormatter = XAxisValueFormatter(dateList)
 
         val set1: LineDataSet
 

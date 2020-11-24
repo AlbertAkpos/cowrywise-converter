@@ -20,6 +20,7 @@ class XAxisValueFormatter(private val dateList: List<String>) : ValueFormatter()
             } else if (value > 4 && value <= 5) {
                 position = 3
             }
+
             return if (position < dateList.size) sdf.format(
                 Date(
                     getDateInMilliSeconds(

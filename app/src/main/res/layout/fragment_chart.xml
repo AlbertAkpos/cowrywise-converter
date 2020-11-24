@@ -12,9 +12,11 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
+        android:padding="@dimen/mg_md"
         android:layout_height="300dp">
 
         <com.github.mikephil.charting.charts.LineChart
+            android:visibility="invisible"
             android:id="@+id/line_chart"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />

@@ -1,7 +1,10 @@
 package me.alberto.cowrywiseconveter.data.remote.source
 
 import me.alberto.cowrywiseconveter.data.remote.api.RestClient
+import java.util.*
 import javax.inject.Inject
+import kotlin.collections.ArrayList
+import kotlin.collections.LinkedHashMap
 
 class RemoteSource @Inject constructor(private val restClient: RestClient) : IRemoteSource {
     override suspend fun getSymbols(): Result<List<String>> {
@@ -31,12 +34,23 @@ class RemoteSource @Inject constructor(private val restClient: RestClient) : IRe
     ): Result<Map<String, Double>> {
         val response = restClient.getRemote().getRateHistory(startDate, endDate, base, symbol)
         return if (response.success) {
-            val rates = HashMap<String, Double>()
+            val array = ArrayList<Double>()
+            val keys = ArrayList<String>()
+            response.rates.keys.map { keys.add(it) }
             response.rates.forEach { returnedRates ->
                 returnedRates.value.forEach {
-                    rates[returnedRates.key] = it.value
+                    array.add(it.value)
                 }
             }
+
+            val rates = LinkedHashMap<String, Double>()
+
+            for (i in array.indices) {
+                val key = keys[i]
+                val value = array[i]
+                rates[key] = value
+            }
+
             Result.Success(rates)
         } else {
             Result.Failure("Some error occurred. Please try again")
