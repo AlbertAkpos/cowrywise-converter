@@ -5,8 +5,8 @@ import me.alberto.cowrywiseconveter.data.domain.model.Country
 import me.alberto.cowrywiseconveter.data.domain.repository.IRepository
 import me.alberto.cowrywiseconveter.data.local.source.ILocalDataSource
 import me.alberto.cowrywiseconveter.data.remote.source.IRemoteSource
-import me.alberto.cowrywiseconveter.data.remote.source.RemoteSource
 import me.alberto.cowrywiseconveter.data.remote.source.Result
+import me.alberto.cowrywiseconveter.util.extension.toCountryList
 import javax.inject.Inject
 
 class Repository @Inject constructor(
@@ -33,12 +33,10 @@ class Repository @Inject constructor(
     override suspend fun getSymbolsFromRemote(): Result<Boolean> {
         val result = remoteSource.getSymbols()
         if (result is Result.Success) {
-            val list = result.data.map { Country(it, it) }
-            try {
-                localSource.addCountry(list)
-            } catch (exp: Exception) {
-                exp.printStackTrace()
-            }
+            val list = result.data.toCountryList()
+
+            localSource.addCountry(list)
+
             return Result.Success(true)
         }
         result as Result.Failure

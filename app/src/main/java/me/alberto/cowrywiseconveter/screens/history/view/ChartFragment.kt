@@ -66,7 +66,7 @@ class ChartFragment : Fragment() {
 
     private fun initViews() {
         binding.viewModel = viewModel
-        binding.lifecycleOwner = this
+        binding.lifecycleOwner = viewLifecycleOwner
 
         lineChart = binding.lineChart
         lineChart.setViewPortOffsets(0f, 0f, 0f, 0f)

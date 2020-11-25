@@ -2,7 +2,6 @@ package me.alberto.cowrywiseconveter.screens.home.viewmodel
 
 import androidx.lifecycle.*
 import kotlinx.coroutines.launch
-import me.alberto.cowrywiseconveter.data.domain.model.Country
 import me.alberto.cowrywiseconveter.data.domain.usecase.ConvertUserCase
 import me.alberto.cowrywiseconveter.data.domain.usecase.GetSymbolsFromRemoteUseCase
 import me.alberto.cowrywiseconveter.data.domain.usecase.GetSymbolsUserCase
@@ -17,7 +16,8 @@ class HomeViewModel @Inject constructor(
     private val getRemoteSymbolsUserCase: GetSymbolsFromRemoteUseCase
 ) :
     ViewModel() {
-    val symbols: LiveData<List<Country>> = getSymbolsUserCase.execute()
+
+    val symbols = getSymbolsUserCase.execute()
 
     private val _loadingState = MutableLiveData<LoadingState>()
     val loadingState: LiveData<LoadingState> = _loadingState
@@ -45,9 +45,6 @@ class HomeViewModel @Inject constructor(
         update()
     }
 
-    init {
-        getSymbols()
-    }
 
     fun getSymbols() {
         viewModelScope.launch {
@@ -71,16 +68,20 @@ class HomeViewModel @Inject constructor(
     }
 
     fun convert() {
+        var message = ""
         if (convertText.value.isNullOrEmpty()) {
-            _error.postValue("Value empty")
+            message += "value to convert is empty, "
+            _error.postValue(message)
         }
 
         if (baseCurrency.value.isNullOrEmpty()) {
-            _error.postValue("Base currency value empty")
+            message += "convert from value is empty "
+            _error.postValue(message)
         }
 
         if (targetCurrency.value.isNullOrEmpty()) {
-            _error.postValue("Target currency value empty")
+            message += "convert to value is empty "
+            _error.postValue(message)
         }
 
         if (!convertText.value.isNullOrEmpty() && !baseCurrency.value.isNullOrEmpty() && !targetCurrency.value.isNullOrEmpty()) {

@@ -17,6 +17,7 @@ import me.alberto.cowrywiseconveter.R
 import me.alberto.cowrywiseconveter.data.remote.model.Query
 import me.alberto.cowrywiseconveter.databinding.FragmentHomeBinding
 import me.alberto.cowrywiseconveter.screens.history.view.HistoryFrag
+import me.alberto.cowrywiseconveter.screens.home.adapter.CountryAdapter
 import me.alberto.cowrywiseconveter.screens.home.viewmodel.HomeViewModel
 import me.alberto.cowrywiseconveter.util.LoadingState
 import java.util.*
@@ -89,7 +90,8 @@ class HomeFragment : Fragment() {
 
     private fun setupViewModel() {
         binding.viewModel = viewModel
-        binding.lifecycleOwner = this
+        binding.lifecycleOwner = viewLifecycleOwner
+        viewModel.getSymbols()
     }
 
     private fun setupObservers() {
@@ -128,6 +130,12 @@ class HomeFragment : Fragment() {
                 binding.rateHistory.setTextColor(resources.getColor(R.color.app_blue))
             }
         }
+
+//        viewModel.getSymbolsLiveData().observe(viewLifecycleOwner){
+//            val adapter = CountryAdapter(requireContext(), it ?: emptyList())
+//            binding.baseSelect.setAdapter(adapter)
+//            binding.targetSelect.setAdapter(adapter)
+//        }
     }
 
     private fun showBottomSheet() {
