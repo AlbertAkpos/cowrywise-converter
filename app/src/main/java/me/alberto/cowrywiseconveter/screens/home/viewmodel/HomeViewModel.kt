@@ -45,6 +45,10 @@ class HomeViewModel @Inject constructor(
         update()
     }
 
+    init {
+        getSymbols()
+    }
+
 
     fun getSymbols() {
         viewModelScope.launch {

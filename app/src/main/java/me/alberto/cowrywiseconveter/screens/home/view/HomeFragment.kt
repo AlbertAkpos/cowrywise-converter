@@ -91,7 +91,6 @@ class HomeFragment : Fragment() {
     private fun setupViewModel() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = viewLifecycleOwner
-        viewModel.getSymbols()
     }
 
     private fun setupObservers() {
