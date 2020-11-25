@@ -4,12 +4,13 @@ import androidx.lifecycle.LiveData
 import me.alberto.cowrywiseconveter.data.domain.model.Country
 import me.alberto.cowrywiseconveter.data.domain.repository.IRepository
 import me.alberto.cowrywiseconveter.data.local.source.ILocalDataSource
+import me.alberto.cowrywiseconveter.data.remote.source.IRemoteSource
 import me.alberto.cowrywiseconveter.data.remote.source.RemoteSource
 import me.alberto.cowrywiseconveter.data.remote.source.Result
 import javax.inject.Inject
 
 class Repository @Inject constructor(
-    private val remoteSource: RemoteSource,
+    private val remoteSource: IRemoteSource,
     private val localSource: ILocalDataSource
 ) : IRepository {
     override fun getSymbols(): LiveData<List<Country>> {

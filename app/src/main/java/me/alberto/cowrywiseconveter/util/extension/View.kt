@@ -8,6 +8,13 @@ import me.alberto.cowrywiseconveter.screens.home.adapter.CountryAdapter
 
 @BindingAdapter("app:symbols")
 fun AutoCompleteTextView.setSymbols(list: List<Country>?) {
+
+    println("""
+       
+        list: ${list.toString()}
+        
+    """)
+
     val adapter = CountryAdapter(context, list ?: emptyList())
     setAdapter(adapter)
 }

@@ -29,10 +29,14 @@ class CountryAdapter(
             .inflate(R.layout.simple_text_item, parent, false) as ConstraintLayout
         val countryFlag = view.findViewById<ImageView>(R.id.country_flag)
         val countryCode = view.findViewById<TextView>(R.id.country_code)
-        countryCode.text = item?.code
-        Glide.with(view.context)
-            .load("https://www.countryflags.io/${item?.image?.subSequence(0, 2)}/flat/64.png")
-            .into(countryFlag)
+
+        if (item != null){
+            countryCode.text = item?.code
+            Glide.with(view.context)
+                .load("https://www.countryflags.io/${item?.image?.subSequence(0, 2)}/flat/64.png")
+                .into(countryFlag)
+        }
+
         return view
     }
 
